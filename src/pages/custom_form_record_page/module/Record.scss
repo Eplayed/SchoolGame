@@ -24,16 +24,18 @@
       }
     }
     .previewDescription {
-      font-size: 1rem;
+      font-size: 0.8rem;
+      line-height: 0.8rem;
       color: #666;
-      margin-bottom: 0.2rem;
+      margin-bottom: 1rem;
     }
     .previewOption {
       .input-text-wrapper,
       .input-matrix-wrapper .input-matrix .matrix-input,
       .picker-address-wrapper,
       .select-dropdown-wrapper,
-      .picker-date-wrapper {
+      .picker-date-wrapper,
+      .img-wrapper {
         color: #999;
       }
 

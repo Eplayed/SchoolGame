@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import Taro, { Component, Config } from "@tarojs/taro";
 import { getFromById, saveAnswer } from "@/api/customForm";
-import Preview from "./module/Answer"; // 蓝牙未开启
+import Preview from "./module/Answer";
 import { View } from "@tarojs/components";
 import { AtButton } from "taro-ui";
 
@@ -213,9 +213,10 @@ class _page extends Component {
               duration: 2000,
             }).then(() => {
               console.log("submit res", res);
-              const recordId = data;
+              // const recordId = data;
               setTimeout(() => {
-                this.goToRecord(recordId);
+                // this.goToRecord(recordId);
+                Taro.navigateBack();
               }, 2000);
             });
           }
