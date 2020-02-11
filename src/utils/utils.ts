@@ -202,14 +202,14 @@ export const drawImage = async (item_info, qrcode) => {
   grd.addColorStop(0, "#FC4514");
   // grd.addColorStop(0.5, '#FFF')
   ctx.setFillStyle(grd);
-  ctx.fillRect(0, 0, 500, 580);
+  ctx.fillRect(0, 0, 500, 540);
 
   // 填充背景色
   const grd_in = ctx.createLinearGradient(0, 0, 1, 600);
   grd_in.addColorStop(0, "#fff");
   // grd.addColorStop(0.5, '#FFF')
   ctx.setFillStyle(grd_in);
-  ctx.fillRect(15, 80, 292, 488);
+  ctx.fillRect(15, 80, 292, 448);
 
   ctx.drawImage(logo_title, 0, 0, 332, 100);
 
@@ -230,32 +230,14 @@ export const drawImage = async (item_info, qrcode) => {
   ctx.setFillStyle("black");
   ctx.fillText(item_info.title, 30, 300);
   ctx.restore();
-
+  const pdfInfo = item_info.pdfPageNum
+    ? ` · ${item_info.pdfPageNum}页 · 已有${item_info.viewNum}人查看`
+    : "";
   // 绘制文字
   ctx.save();
   ctx.setFontSize(14);
   ctx.setFillStyle("#999");
-  ctx.fillText(
-    `${item_info.title} · ${item_info.pdfPageNum}页 · 已有${item_info.viewNum}人查看`,
-    30,
-    325,
-  );
-  ctx.restore();
-
-  ctx.lineTo(30, 292);
-  ctx.moveTo(30, 345);
-  ctx.setStrokeStyle("red");
-  ctx.stroke();
-
-  // 绘制文字
-  ctx.save();
-  ctx.setFontSize(14);
-  ctx.setFillStyle("#999");
-  ctx.fillText(
-    `${item_info.title} · ${item_info.pdfPageNum}页 · 已有${item_info.viewNum}人查看`,
-    30,
-    325,
-  );
+  ctx.fillText(`${item_info.title}${pdfInfo}`, 30, 325);
   ctx.restore();
 
   // 绘制二维码
