@@ -55,7 +55,7 @@ class _page extends Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   componentDidShow() {
     const { trackId } = this.state;
@@ -72,13 +72,15 @@ class _page extends Component {
     });
   }
 
-  componentWillReact() {}
+  componentWillReact() { }
 
   join = () => {
     const { detail_info } = this.state;
+    const { trackId } = this.state;
     Taro.navigateTo({
-      url: `/pages/custom_form_answer_page/index?id=${detail_info.questionnaireId}`,
+      url: `/pages/custom_form_answer_page/index?id=${detail_info.questionnaireId}&trackId=${trackId}`,
     });
+
   };
 
   doCollect = () => {
@@ -100,7 +102,7 @@ class _page extends Component {
   showInfo = () => {
     const { detail_info } = this.state;
     Taro.navigateTo({
-      url: `/pages/custom_form_record_page/index?recordId=${detail_info.questionnaireId}`,
+      url: `/pages/custom_form_record_page/index?recordId=${detail_info.questionnaireAnswerId}`,
     });
   };
 
@@ -162,36 +164,36 @@ class _page extends Component {
               </View>
             </View>
           ) : (
-            <View className="fixButtom">
-              <View
-                className="fix_btn_group"
-                onClick={() => {
-                  return this.doCollect();
-                }}
-              >
-                <Image
-                  className="fix_btn_img"
-                  src={detail_info.isFavorite ? collected : collect}
-                ></Image>
-                <View>收藏</View>
-              </View>
-              <View className="fix_btn_group">
-                <Image className="fix_btn_img" src={share}></Image>
-                <Button className="fix_btn_share" openType="share">
-                  分享
+              <View className="fixButtom">
+                <View
+                  className="fix_btn_group"
+                  onClick={() => {
+                    return this.doCollect();
+                  }}
+                >
+                  <Image
+                    className="fix_btn_img"
+                    src={detail_info.isFavorite ? collected : collect}
+                  ></Image>
+                  <View>收藏</View>
+                </View>
+                <View className="fix_btn_group">
+                  <Image className="fix_btn_img" src={share}></Image>
+                  <Button className="fix_btn_share" openType="share">
+                    分享
                 </Button>
-              </View>
+                </View>
 
-              <View
-                className="fix_btn"
-                onClick={() => {
-                  this.join();
-                }}
-              >
-                立即报名
+                <View
+                  className="fix_btn"
+                  onClick={() => {
+                    this.join();
+                  }}
+                >
+                  立即报名
               </View>
-            </View>
-          )}
+              </View>
+            )}
         </ScrollView>
       </View>
     );
