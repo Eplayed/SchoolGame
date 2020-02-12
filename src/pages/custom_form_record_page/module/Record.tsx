@@ -2,9 +2,14 @@
 /* eslint-disable complexity */
 /* eslint-disable max-lines-per-function */
 import Taro, { Component } from "@tarojs/taro";
-import { View, Image, Picker, Radio, RadioGroup, CheckboxGroup, Checkbox } from "@tarojs/components";
-import { AtImagePicker } from "taro-ui";
-import { baseUrl } from "../../../config/baseUrl";
+import {
+  View,
+  Image,
+  Radio,
+  RadioGroup,
+  CheckboxGroup,
+  Checkbox,
+} from "@tarojs/components";
 import "./Record.scss";
 
 type StateType = {
@@ -29,41 +34,37 @@ class Record extends Component {
     item: {},
     valueData: {},
     formIndex: 0,
-    showQuestion: () => { },
+    showQuestion: () => {},
   };
 
   constructor(props) {
     super(props);
   }
 
-  state: StateType = {
-  };
+  state: StateType = {};
 
-  componentWillMount() { }
+  componentWillMount() {}
 
-  componentDidMount() { }
+  componentDidMount() {}
 
-  componentWillUnmount() { }
+  componentWillUnmount() {}
 
-  componentDidHide() { }
+  componentDidHide() {}
 
-  componentDidShow() { }
+  componentDidShow() {}
 
-  componentWillReact() { }
-
+  componentWillReact() {}
 
   render() {
-    const { valueData, errorData, formIndex, item, handleValueDataChange, showQuestion } = this.props;
+    const { valueData, errorData, formIndex, item, showQuestion } = this.props;
     const {
       category,
       questionTitle,
       questionDescription,
       questionIndex,
       questionRequired,
-      optionPlaceholder,
       optionInputMatrixText,
       optionRadioArray,
-      optionUploadImageMaxLength,
     } = item;
     let optionTemplate: any = null;
     if (!showQuestion(item)) {
@@ -72,9 +73,7 @@ class Record extends Component {
     switch (category) {
       case "input-text": {
         optionTemplate = (
-          <View className="input-text-wrapper">
-            {valueData[questionIndex]}
-          </View>
+          <View className="input-text-wrapper">{valueData[questionIndex]}</View>
         );
         break;
       }
@@ -86,10 +85,7 @@ class Record extends Component {
               .split("\n")
               .map((text, index) => {
                 return (
-                  <View
-                    className="input-matrix"
-                    key={`${text}-${index}`}
-                  >
+                  <View className="input-matrix" key={`${text}-${index}`}>
                     <View className="matrix-label">{text}:</View>
                     <View className="matrix-input">
                       {valueData[questionIndex][index]}
@@ -112,15 +108,17 @@ class Record extends Component {
                       className="checkbox-list__checkbox"
                       value={radioObj.text}
                       disabled
-                      checked={valueData[questionIndex].includes(radioObj.text)}
+                      checked={
+                        valueData[questionIndex] &&
+                        valueData[questionIndex].includes(radioObj.text)
+                      }
                     >
                       {radioObj.text}
                     </Checkbox>
                   </View>
                 );
-              })
-              }
-            </CheckboxGroup >
+              })}
+            </CheckboxGroup>
           </View>
         );
         break;
@@ -136,7 +134,6 @@ class Record extends Component {
       case "select-radio": {
         optionTemplate = (
           <View className="select-radio-wrapper">
-
             <RadioGroup>
               {optionRadioArray.map((radioObj, index) => {
                 return (
@@ -145,7 +142,7 @@ class Record extends Component {
                       className="radio-list__radio"
                       value={radioObj.text}
                       disabled
-                      checked={valueData[questionIndex] === (radioObj.text)}
+                      checked={valueData[questionIndex] === radioObj.text}
                     >
                       {radioObj.text}
                     </Radio>
@@ -176,13 +173,17 @@ class Record extends Component {
       case "upload-image": {
         optionTemplate = (
           <View className="upload-image-wrapper">
-            {
-              valueData[questionIndex].map(imgObj => (
-                <View className="img-wrapper">
-                  <Image src={imgObj.url} />
-                </View>
-              ))
-            }
+            {valueData[questionIndex] && valueData[questionIndex].length ? (
+              valueData[questionIndex].map((imgObj, imgIndex) => {
+                return (
+                  <View className="img-wrapper" key={imgIndex}>
+                    <Image src={imgObj.url} />
+                  </View>
+                );
+              })
+            ) : (
+              <View className="img-wrapper">未上传</View>
+            )}
           </View>
         );
         break;
@@ -192,12 +193,13 @@ class Record extends Component {
       }
     }
 
-
     return (
-      <View className="previewWrapper" >
+      <View className="previewWrapper">
         <View className="previewContent">
           <View className="previewTitle">
-            {questionRequired && <View className="previewTitle_required">*</View>}
+            {questionRequired && (
+              <View className="previewTitle_required">*</View>
+            )}
             <View className="previewTitle_index">{Number(formIndex) + 1}.</View>
             <View className="previewTitle_title">{questionTitle}</View>
           </View>

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import Taro, { Component, Config } from "@tarojs/taro";
 import { getFromById, saveAnswer } from "@/api/customForm";
-import Preview from "./module/Answer"; // 蓝牙未开启
+import Preview from "./module/Answer";
 import { View } from "@tarojs/components";
 import { AtButton } from "taro-ui";
 
@@ -61,19 +61,20 @@ class _page extends Component {
     previewImage: "", // 预览图片地址
   };
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   componentDidShow() {
     const { id } = this.$router.params; // custom form id
+    const { trackId } = this.$router.params; // custom form id
     console.log("id", id);
     if (id && id !== "null") {
-      this.setState({ id });
+      this.setState({ id, trackId });
       getFromById({
         id,
       }).then((res: any) => {
@@ -100,7 +101,7 @@ class _page extends Component {
     }
   }
 
-  componentWillReact() {}
+  componentWillReact() { }
 
   config: Config = {
     // navigationBarBackgroundColor: "#F0E8DF",
@@ -190,8 +191,8 @@ class _page extends Component {
   // 提交问卷
   handleSubmit = () => {
     const { valueData } = this.state;
-    const { id } = this.state;
-    console.log("submit", valueData); // eslint-disable-line
+    const { id, trackId } = this.state;
+    console.log("submit", id, valueData); // eslint-disable-line
     if (this.hasError()) {
       Taro.showToast({
         title: "请修改标红题目后提交",
@@ -203,6 +204,7 @@ class _page extends Component {
         saveAnswer({
           formData: JSON.stringify(valueData),
           questionnaireId: id,
+          activityTrackingId: trackId,
         }).then((res: any) => {
           console.log("res", res);
           const { code, data } = res;
@@ -213,9 +215,10 @@ class _page extends Component {
               duration: 2000,
             }).then(() => {
               console.log("submit res", res);
-              const recordId = data;
+              // const recordId = data;
               setTimeout(() => {
-                this.goToRecord(recordId);
+                // this.goToRecord(recordId);
+                Taro.navigateBack();
               }, 2000);
             });
           }

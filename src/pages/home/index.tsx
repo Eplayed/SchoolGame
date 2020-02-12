@@ -180,20 +180,34 @@ class _page extends Component {
     Taro.navigateTo({
       url: `/pages/theme_detail_page/index?themeId=${themeId}`,
     });
-  };
-
-  goToDetailByTrackId = (teackId) => {
-    const { track } = this.state;
-    const trackDetail = track.filter((item) => {
-      return item.id === teackId;
-    });
-    console.log("trackDetail", trackDetail);
-    setStore("trackDetail", trackDetail[0]);
+  }
+  goToDetailByTrackId = (teackId, trackDetail) => {
+    setStore('trackDetail', trackDetail)
     Taro.navigateTo({
       url: `/pages/track_detail_page/index?trackId=${teackId}`,
     });
-  };
-
+  }
+  handleTrackItemClick = (teackId) => {
+    const { track } = this.state;
+    const trackDetail = track.filter(item => item.id === teackId)
+    console.log('trackDetail', trackDetail)
+    if (1) { //TODO:
+      // 进入详情
+      this.goToDetailByTrackId(teackId, trackDetail[0])
+    } else {
+      // 直接进入报名表单 或 回显报名表单
+      const { isJoin, questionnaireAnswerId, questionnaireId } = trackDetail[0];
+      if (isJoin) {
+        Taro.navigateTo({
+          url: `/pages/custom_form_record_page/index?recordId=${questionnaireAnswerId}`,
+        });
+      } else {
+        Taro.navigateTo({
+          url: `/pages/custom_form_answer_page/index?id=${questionnaireId}&trackId=${teackId}`,
+        });
+      }
+    }
+  }
   goToCategoryGroup = (item, name) => {
     setStore(`${name}GroupList`, item);
     Taro.navigateTo({
@@ -256,40 +270,10 @@ class _page extends Component {
               </View>
             </ScrollView>
 
-            <ItemView
-              title="教学资源"
-              note="查找你需要的课堂教学内容"
-              list={teach}
-              type="icon"
-              onClick={(e) => {
-                return this.goToDetailByCategoryId(e);
-              }}
-              onTapGrunp={() => {
-                return this.goToGroup(teach);
-              }}
-            />
-            <ItemView
-              title="热门话题"
-              note="体育老师都在讨论什么"
-              list={theme}
-              onTapGrunp={() => {
-                return this.goToCategoryGroup(theme, "theme");
-              }}
-              onClick={(e) => {
-                return this.goToDetailByThemeId(e);
-              }}
-            />
-            <ItemView
-              title="活动追踪"
-              note="活力校园相关资讯"
-              list={track}
-              onTapGrunp={() => {
-                return this.goToCategoryGroup(track, "track");
-              }}
-              onClick={(e) => {
-                return this.goToDetailByTrackId(e);
-              }}
-            />
+
+            <ItemView title="教学资源" note='查找你需要的课堂教学内容' list={teach} type='icon' onClick={(e) => this.goToDetailByCategoryId(e)} onTapGrunp={() => this.goToGroup(teach)} />
+            <ItemView title="热门话题" note='体育老师都在讨论什么' list={theme} onTapGrunp={() => this.goToCategoryGroup(theme, 'theme')} onClick={(e) => this.goToDetailByThemeId(e)} />
+            <ItemView title="活动追踪" note='活力校园相关资讯' list={track} onTapGrunp={() => this.goToCategoryGroup(track, 'track')} onClick={(teackId) => this.handleTrackItemClick(teackId)} />
             <ItemView title="活力校园项目展示" note='活力校园相关资讯' list={vigorous} />
           </View>
         </ScrollView>

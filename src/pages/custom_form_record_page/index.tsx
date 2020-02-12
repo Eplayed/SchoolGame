@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import Taro, { Component, Config } from "@tarojs/taro";
 import { getAnswerByRecordId } from "@/api/customForm";
-import Preview from "./module/Record"; // 蓝牙未开启
+import Preview from "./module/Record";
 import { View } from "@tarojs/components";
 
 import "./index.scss";
@@ -102,13 +102,16 @@ class _page extends Component {
           // 多选 答案是数组
           const matchOptions = valueData[relation["questionIndex"]].filter(
             (value) => {
-              return relation.values.includes(value);
+              return relation.values && relation.values.includes(value);
             },
           );
           return Boolean(matchOptions.length);
         } else {
           // 单选 答案是字符串
-          return relation.values.includes(valueData[relation["questionIndex"]]);
+          return (
+            relation.values &&
+            relation.values.includes(valueData[relation["questionIndex"]])
+          );
         }
       });
     }
